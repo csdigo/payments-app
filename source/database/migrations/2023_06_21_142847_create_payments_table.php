@@ -7,12 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     /**
      * Run the migrations.
-     * name,governmentId,email,debtAmount,debtDueDate,debtId
-     * John Doe,11111111111,johndoe@kanastra.com.br,1000000.00,2022-10-12,8291 
      */
     public function up(): void
     {
-        Schema::create('cobrancas', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string("name");
             $table->string("governmentId");

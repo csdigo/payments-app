@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dto\PaymentData;
 use App\Http\Requests\UpdatePaymentRequest;
-use App\Services\CobrancaService;
+use App\Services\PaymentService;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request;
@@ -13,9 +13,9 @@ class WebhookController extends Controller
 {
     private $service;
 
-    public function __construct(CobrancaService $cobrancaService)
+    public function __construct(PaymentService $service)
     {
-        $this->service = $cobrancaService;
+        $this->service = $service;
 
     }
     public function Payment(UpdatePaymentRequest $request)

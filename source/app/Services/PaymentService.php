@@ -3,22 +3,21 @@
 namespace App\Services;
 
 use App\Dto\PaymentData;
-use App\Http\Requests\UpdatePayment;
-use App\Models\Cobranca;
-use App\Repositories\CobrancaRepository;
+use App\Models\Payment;
+use App\Repositories\PaymentRepository;
 
-class CobrancaService
+class PaymentService
 {
     protected $repository;
     protected $mailService;
 
-    public function __construct(CobrancaRepository $cobrancaRepository, MailService $mailService)
+    public function __construct(PaymentRepository $repository, MailService $mailService)
     {
-        $this->repository = $cobrancaRepository;
+        $this->repository = $repository;
         $this->mailService = $mailService;
     }
 
-    public function getCobrancas()
+    public function getAll()
     {
         return $this->repository->getAll();
     }
@@ -30,7 +29,7 @@ class CobrancaService
         foreach ($payments as $payment) {
             $obj = $this->repository->getBy($payment->debtId);
             if ($obj == null) {
-                $cob = new Cobranca();
+                $cob = new Payment();
                 $cob->New(
                     $payment->debtId,
                     $payment->name,
@@ -46,11 +45,12 @@ class CobrancaService
                 $resultNotImport[] = $obj->toArray();
             }
 
-            return [
-                //'Success' => collect($resultImport)->count() + " rows imported",
-               // 'Not Success' => collect($resultNotImport)->count() + " rows notimported",
-            ];
+          
         }
+        return [
+            //'Success' => collect($resultImport)->count() + " rows imported",
+           // 'Not Success' => collect($resultNotImport)->count() + " rows notimported",
+        ];
     }
 
     public function Payment(PaymentData $dto)

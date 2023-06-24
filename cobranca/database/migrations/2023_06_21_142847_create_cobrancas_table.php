@@ -15,15 +15,19 @@ return new class extends Migration {
         Schema::create('cobrancas', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->integer("governmentId");
+            $table->string("governmentId");
             $table->string("email");
-            $table->decimal("debtAmount");
+            $table->decimal("debtAmount", 18, 2);
             $table->timestamp("debtDueDate");
             $table->integer("debtId");
             $table->boolean("paid")->default(false);
+            $table->timestamp("paidAt")->nullable();
+            $table->decimal("paidAmount", 18, 2)->nullable();
+            $table->string("paidBy")->nullable();
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.

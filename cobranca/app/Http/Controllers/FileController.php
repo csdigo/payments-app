@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Dto\ImportPaymentsData;
+use App\Http\Requests\ImportPaymentsRequest;
+use App\Services\CobrancaService;
 
 class FileController extends Controller
 {
-    public function Upload(Request $request)
+    private $cobrancaService;
+
+    public function __construct(CobrancaService $cobrancaService)
     {
-         return response("", 200);
+        $this->cobrancaService = $cobrancaService;
+    }
+
+    public function Upload(ImportPaymentsRequest $request)
+    {
+        $payments = ImportPaymentsData::fromRequest($request);
+        $this->cobrancaService->ImportPayments($payments);
+        return response(null, 200);
     }
 }

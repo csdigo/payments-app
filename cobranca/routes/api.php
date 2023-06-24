@@ -22,5 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/file', [FileController::class, 'Upload']);
 Route::post('/cobranca', [CobrancaController::class, 'getAll']);
-Route::post('/hook/baixaboleto', [WebhookController::class, 'getAll']);
+Route::post('/hook/payment', [WebhookController::class, 'Payment']);
 

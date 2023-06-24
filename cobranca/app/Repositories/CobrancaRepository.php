@@ -18,12 +18,25 @@ class CobrancaRepository
     {
         return $this->entity->all();
     }
-
-    public function insert(array $cobrancas)
+    public function getBy(int $DebtId): Cobranca|null
     {
-        return $this->entity->create($cobrancas);
+        $obj = collect($this->entity::where("debtId", '=', $DebtId)->get())->first();
+        return $obj;
     }
 
-    // TODO criar o demais com a demanda
+    public function insert(Cobranca $cobrancas)
+    {
+        return $this->entity->create($cobrancas->toArray());
+    }
 
+    public function update(Cobranca $cobranca)
+    {
+        Cobranca::where('id', $cobranca->id)
+            ->update([
+                'paid' => $cobranca->paid,
+                'paidAt' => $cobranca->paidAt,
+                'paidAmount' => $cobranca->paidAmount,
+                'paidBy' => $cobranca->paidBy,
+            ]);
+    }
 }

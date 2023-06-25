@@ -8,6 +8,7 @@ use App\Services\PaymentService;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class WebhookController extends Controller
 {
@@ -21,9 +22,24 @@ class WebhookController extends Controller
     public function Payment(UpdatePaymentRequest $request)
     {
         try {
+            // $validator = Validator::make($request->all(), [
+            //     'debtId' => ['required', 'integer'],
+            //     'paidAt' => ['required', 'date'],
+            //     'paidAmount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            //     'paidBy' => ['required', 'min:3', 'max:255']
+            // ]);
+            // if ($validator->fails()) {
+            //     return response()->json([
+            //         "error" => 'validation_error',
+            //         "message" => $validator->errors(),
+            //     ], 422);
+            // }
+
             $dto = PaymentData::fromRequest($request);
-            $this->service->Payment($dto);
-            return response(null, 201);
+            if ($this->service->Payment($dto)) {
+                return response(null, 201);
+            }
+            return response(null, 404);
         } catch (Throwable $e) {
             return response($e, 500);
         }

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Dto\ImportPaymentsData;
 use App\Http\Requests\ImportPaymentsRequest;
+use App\Http\Traits\CsvParser;
+use App\Models\Payment;
 use App\Services\PaymentService;
+use Illuminate\Support\Facades\Validator;
 
 class FileController extends Controller
 {
@@ -17,8 +20,25 @@ class FileController extends Controller
 
     public function Upload(ImportPaymentsRequest $request)
     {
-        $payments = ImportPaymentsData::fromRequest($request);
-        $this->paymentService->ImportPayments($payments);
-        return response(null, 201);
+        try {
+
+            $csvValid = collect($request->valid());
+
+            if ($csvValid->count()) {
+                return response()->json([
+                    "error" => 'validation_error',
+                    "message" => $csvValid,
+                ], 422);
+            }
+
+            $payments = ImportPaymentsData::fromRequest($request);
+            $this->paymentService->ImportPayments($payments);
+            return response(null, 201);
+
+        } catch (Throwable $e) { {
+                return response($e, 400);
+            }
+
+        }
     }
 }

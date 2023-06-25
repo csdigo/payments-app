@@ -2,15 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Cobranca;
+use App\Http\Traits\CsvParser;
+use App\Models\Payment;
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Support\Facades\Validator;
 
 class ImportPaymentsRequest extends FormRequest
 {
     public function __construct()
     {
-        
+
     }
 
     /**
@@ -28,24 +29,28 @@ class ImportPaymentsRequest extends FormRequest
      */
     public function rules(): array
     {
-        /*
-        name,governmentId,email,debtAmount,debtDueDate,debtId
-        John Doe,11111111111,johndoe@kanastra.com.br,1000000.00,2022-10-12,8291
-        */
         return [
-            'field_csvfile' => [
-                'bail',
-                'file',
-                'mimes:csv,txt,xls,xlsx',
-                new Cobranca( [
-                    'name' => 'required',
-                    'governmentId' => 'required', 'integer',
-                    'email' => ['required', 'string'],
-                    'debtAmount' => ['required', 'decimal'],
-                    'debtDueDate' => ['required', 'date'],
-                    'debtId' => ['required', 'integer'],
-                ])
-            ]
+            '*.name' => 'required',
+            '*.governmentId' => 'required',
+            '*.email' => ['required', 'string'],
+            '*.debtAmount' => ['required', 'string'],
+            '*.debtDueDate' => ['required', 'date'],
+            '*.debtId' => ['required', 'integer'],
         ];
+    }
+
+    public function Valid()
+    {
+        $file = $this->file("file")->get();
+
+        $csvData = CsvParser::CsvToArray($file);
+        $validator = Validator::make(
+            $csvData,
+            $this->rules()
+        );
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
     }
 }

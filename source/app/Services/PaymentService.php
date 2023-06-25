@@ -57,11 +57,12 @@ class PaymentService
     {
         $obj = $this->repository->getBy($dto->debtId);
         if ($obj != null) {
-            if (!$obj->Pay($dto->paidAt, $dto->paidAmount, $dto->paidBy)) {
-                return false;
+            if ($obj->Pay($dto->paidAt, $dto->paidAmount, $dto->paidBy)) {
+                $this->repository->update($obj);
             }
-            $this->repository->update($obj);
+            return true;
+
         }
-        return true;
+        return false;
     }
 }

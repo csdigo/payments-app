@@ -48,15 +48,23 @@ class PaymentService
                 if ($resultValidation == [])
                     $resultImport[] = $this->PaymentSuccess($cob);
                 else
-                    $resultImport[] = $resultValidation;
+                    $resultNotImport[] =
+                        [
+                            "DebtId" => $payment->debtId,
+                            "Validations" => $resultValidation
+                        ];
             } else {
                 // Boletos já importados
-                $resultNotImport[] = $obj->toArray();
+                $resultNotImport[] = [
+                    "DebtId" => $payment->debtId,
+                    "Validations" => PaymentResource::$IMPORT_EXISTS
+                ];
             }
         }
         return [
-            //'Success' => collect($resultImport)->count() + " rows imported",
-            // 'Not Success' => collect($resultNotImport)->count() + " rows notimported",
+            'Success' => strval(collect($resultImport)->count()) . " rows imported",
+            'Not Success' => strval(collect($resultNotImport)->count()) . " rows not imported",
+            'Reasons' => $resultNotImport
         ];
     }
 
@@ -69,8 +77,7 @@ class PaymentService
             if ($validation == []) {
                 $this->repository->update($obj);
             }
-        }
-        else{
+        } else {
             $validation[] = PaymentResource::$NOT_FOUND;
         }
         return $validation;

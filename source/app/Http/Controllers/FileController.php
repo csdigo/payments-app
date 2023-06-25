@@ -29,8 +29,8 @@ class FileController extends Controller
             }
 
             $payments = ImportPaymentsData::fromRequest($request);
-            $this->paymentService->ImportPayments($payments);
-            return response(null, 201);
+            $result = $this->paymentService->ImportPayments($payments);
+            return response($result, 201);
 
         } catch (Throwable $e) { {
                 return response($e, 400);

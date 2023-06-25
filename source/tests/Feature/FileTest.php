@@ -22,7 +22,7 @@ class FileTest extends TestCase
         Storage::fake('uploads');
 
         $header = 'name,governmentId,email,debtAmount,debtDueDate,debtId';
-        $row1 = 'John Doe,333333,johndoe@kanastra.com.br,1000000.00,2022-10-12,8293';
+        $row1 = 'John Doe,333333,johndoe@kanastra.com.br,1000000.00,2024-10-12,8293';
         $row2 = 'Muniz,44444,johndoe@kanastra.com.br,100.50,2023-10-12,8294';
 
         $content = implode(PHP_EOL, [$header, $row1, $row2]);
@@ -70,11 +70,9 @@ class FileTest extends TestCase
                 )
         ];
 
-
         $response = $this->post(
             '/api/file',
             $inputs
-
         );
 
         $retorno = Payment::get();

@@ -22,7 +22,8 @@ class WebhookTest extends TestCase
         $pag->governmentId = "333333";
         $pag->email = "johndoe@kanastra.com.br";
         $pag->debtAmount = 1000000.00;
-        $pag->debtDueDate = "2022-10-12";
+        $pag->debtDueDate = "2023-10-12";
+        $pag->paid = false;
         $pag->debtId = 8292;
 
         Payment::create($pag->toArray());

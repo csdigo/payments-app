@@ -22,21 +22,9 @@ class WebhookController extends Controller
     public function Payment(UpdatePaymentRequest $request)
     {
         try {
-            // $validator = Validator::make($request->all(), [
-            //     'debtId' => ['required', 'integer'],
-            //     'paidAt' => ['required', 'date'],
-            //     'paidAmount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            //     'paidBy' => ['required', 'min:3', 'max:255']
-            // ]);
-            // if ($validator->fails()) {
-            //     return response()->json([
-            //         "error" => 'validation_error',
-            //         "message" => $validator->errors(),
-            //     ], 422);
-            // }
 
             $dto = PaymentData::fromRequest($request);
-            if ($this->service->Payment($dto)) {
+            if ($this->service->Payment($dto) == []) {
                 return response(null, 201);
             }
             return response(null, 404);

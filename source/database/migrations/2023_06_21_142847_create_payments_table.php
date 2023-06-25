@@ -22,16 +22,16 @@ return new class extends Migration {
             $table->timestamp("paidAt")->nullable();
             $table->decimal("paidAmount", 18, 2)->nullable();
             $table->string("paidBy")->nullable();
+            $table->string("barCode", 44)->nullable();
             $table->timestamps();
         });
     }
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('cobrancas');
+        Schema::dropIfExists('payments');
     }
 };

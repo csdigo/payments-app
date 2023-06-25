@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dto\ImportPaymentsData;
 use App\Http\Requests\ImportPaymentsRequest;
-use App\Http\Traits\CsvParser;
-use App\Models\Payment;
 use App\Services\PaymentService;
-use Illuminate\Support\Facades\Validator;
 
 class FileController extends Controller
 {
